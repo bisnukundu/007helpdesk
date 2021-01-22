@@ -55,7 +55,28 @@
         {{ session('delete_msg') }}
       </div>
       @endif
-      <div class="flex flex-col mt-20 bg-white overflow-hidden shadow-xl sm:rounded-lg">
+
+      <div class="flex  mt-10 flex-col bg-white overflow-hidden shadow-xl sm:rounded-lg">
+        {{-- Search option  --}}
+        <div class="flex flex-row-reverse">
+          <form action="{{route('search_user')}}" method="GET" class=" block max-w-3xl">
+            <div class="shadow sm:rounded-md  sm:overflow-hidden">
+              <div class="px-4  py-3 bg-gray-50 text-right sm:px-6">
+                <div class="space-x-4 mr-0">
+                  <div class=" inline-block mt-1 relative rounded-md shadow-sm">
+                    <input required type="text" name="search_user" id="user_id"
+                      class="focus:ring-indigo-500 focus:border-indigo-500 block  pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
+                      placeholder="Search User">
+                  </div>
+                  <button type="submit"
+                    class="inline-block justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Search
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
         <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
             <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -121,8 +142,14 @@
 
 
                     <td class="px-6 py-4 whitespace-nowrap">
-                      <a onclick="return confirm('Are you sure?')" href="delete_user/{{$id->id}}"
-                        class="text-red-500 font-bold hover:text-indigo-900">Delete</a>
+                      <form action="delete_user/{{$id->id}}" method="POST">
+                        @csrf
+                        @method('delete')
+                        <button onclick="return confirm('Are you sure?')"
+                          class="text-red-500 font-bold hover:text-indigo-900">
+                          Delete
+                        </button>
+                      </form>
                     </td>
                   </tr>
                   @endforeach

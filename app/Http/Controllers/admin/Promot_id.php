@@ -5,33 +5,49 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use APP\Models\Create_promot_id;
+
+use App\Models\Promot_users;
 
 class Promot_id extends Controller
 {
     public function index(Request $request)
     {
-        $data = DB::select('select * from promot_id order by id desc');
+        // $data = Create_promot_id::all();
+        $data = Promot_users::all()->sortByDesc('updated_at');
         return view("admin.promot_id", ["data" => $data]);
     }
     public function store(Request $request)
     {
-        $promot_id = $request->input('promot_id');
-        $watch_time = $request->input('watch_time');
         // validation user id 
         $validated = $request->validate([
-            'promot_id' => 'required',
+            'user_id' => 'required',
             'watch_time' => 'required'
         ]);
-        // user id data
-        $user_id = $request->input("promot_id");
-        // create user id query 
-        DB::insert('insert into promot_id (promot_id,watch_time) values (?,?)', [$user_id, $watch_time]);
-        return back()->with("create_msg", "Promot ID Create Successfully");
+
+        $cpi = Promot_users::where('user_id', $request->input('user_id'))->update([
+            'watch_time' => $request->input('watch_time'),
+            'permission' => 1
+        ]);
+        if ($cpi) {
+            return back()->with("create_msg", "Permission Granted");
+        } else {
+            return back()->with("invaild_msg", "Invaild User ID");
+        }
     }
-    public function delete(Request $request, $id)
+    public function deny(Request $request)
     {
-        DB::delete("delete from promot_id where id= ?", [$id]);
-        return back()->with('delete_msg', "Delete Successfully");
+        $cpi = Promot_users::where('user_id', $request->input('user_id_for_deny'))->update([
+            'permission' => 0
+        ]);
+
+        return back()->with("invaild_msg", "Permission Deny");
+    }
+    public function alldeny(Request $request)
+    {
+        $cpi = Promot_users::where('permission', '1')->update([
+            'permission' => 0
+        ]);
+
+        return back()->with("invaild_msg", "Permission All Deny");
     }
 }

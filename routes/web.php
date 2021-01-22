@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\Create_u_id;
 use App\Http\Controllers\admin\Promot_id;
+use App\Http\Controllers\admin\Statistics;
 
 
 /*
@@ -26,10 +27,14 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 
 // Admin 
 // Create User id 
-Route::get("create_u_id",[Create_u_id::class,"index"])->name("create_u_id");
-Route::post("create_u_id",[Create_u_id::class,"store"])->name("create_id");
-Route::get("delete_user/{id}",[Create_u_id::class,"delete"]);
+Route::get("create_u_id", [Create_u_id::class, "index"])->name("create_u_id");
+Route::post("create_u_id", [Create_u_id::class, "store"])->name("create_id");
+Route::delete("delete_user/{id}", [Create_u_id::class, "delete"]);
+Route::get("search_user", [Create_u_id::class, "search"])->name("search_user");
 // Promot id 
-Route::get("promot_id",[Promot_id::class,"index"])->name("promot_id");
-Route::post("promot_id",[Promot_id::class,"store"])->name("promot_id");
-Route::get("delete_promot/{id}",[Promot_id::class,"delete"]);
+Route::get("promot_id", [Promot_id::class, "index"])->name("promot_id");
+Route::post("promot_id", [Promot_id::class, "store"])->name("promot_id");
+Route::post("deny", [Promot_id::class, "deny"])->name("deny");
+Route::post("alldeny", [Promot_id::class, "alldeny"])->name("allDeny");
+//Statistics
+Route::get('statistics', [Statistics::class, 'index'])->name('statistics');

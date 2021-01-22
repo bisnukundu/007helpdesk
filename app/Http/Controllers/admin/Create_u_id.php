@@ -5,12 +5,18 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Promot_users;
 
 class Create_u_id extends Controller
 {
     public function index(Request $request)
     {
-        $data = DB::select('select * from promot_user');
+        $data = Promot_users::all()->sortByDesc('updated_at');
+        return view("admin.create_u_id", ['data' => $data]);
+    }
+    public function search(Request $request)
+    {
+        $data = Promot_users::where('user_id', $request->input('search_user'))->get();
         return view("admin.create_u_id", ['data' => $data]);
     }
     public function store(Request $request)
@@ -19,16 +25,16 @@ class Create_u_id extends Controller
         $validated = $request->validate([
             'user_id' => ['required', 'unique:promot_user']
         ]);
-
-        // user id data
-        $user_id = $request->input("user_id");
         // create user id query 
-        DB::insert('insert into promot_user (user_id) values (?)', [$user_id]);
+        Promot_users::create([
+            'user_id' => $request->input("user_id")
+        ]);
         return back()->with("create_msg", "User ID Create Successfully");
     }
-    public function delete(Request $request, $id)
+    public function delete($id)
     {
-        DB::delete("delete from promot_user where id= ?", [$id]);
+        $data = Promot_users::find($id)->first();
+        $data->delete();
         return back()->with('delete_msg', "Delete Successfully");
     }
 }

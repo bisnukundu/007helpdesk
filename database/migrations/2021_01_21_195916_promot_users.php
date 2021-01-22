@@ -21,6 +21,12 @@ class PromotUsers extends Migration
             $table->string('phone')->nullable();
             $table->string('password')->nullable();
             $table->string('channel_name')->nullable();
+            // new
+            $table->string("promot_id")->nullable();
+            $table->string("watch_time")->nullable();
+            $table->string("video_id")->nullable();
+            $table->string("done_status")->nullable();
+            $table->string("permission")->default(0);
             $table->timestamps();
         });
     }
@@ -32,6 +38,6 @@ class PromotUsers extends Migration
      */
     public function down()
     {
-        Schema::drop('promot_user');
+        Schema::dropIfExists('promot_user');
     }
 }
