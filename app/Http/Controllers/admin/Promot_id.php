@@ -5,14 +5,12 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
 use App\Models\Promot_users;
 
 class Promot_id extends Controller
 {
     public function index(Request $request)
     {
-        // $data = Create_promot_id::all();
         $data = Promot_users::all()->sortByDesc('updated_at');
         return view("admin.promot_id", ["data" => $data]);
     }

@@ -156,6 +156,7 @@
                   <!-- More items... -->
                 </tbody>
               </table>
+              <div class="px-5 pb-5"> {{$data->links()}}</div>
             </div>
           </div>
         </div>

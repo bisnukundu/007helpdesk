@@ -11,7 +11,7 @@ class Create_u_id extends Controller
 {
     public function index(Request $request)
     {
-        $data = Promot_users::all()->sortByDesc('updated_at');
+        $data = Promot_users::paginate(10);
         return view("admin.create_u_id", ['data' => $data]);
     }
     public function search(Request $request)
