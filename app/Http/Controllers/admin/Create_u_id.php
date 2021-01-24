@@ -31,4 +31,56 @@ class Create_u_id extends Controller {
         $data->delete();
         return back()->with( 'delete_msg', "Delete Successfully" );
     }
+    public function userRegisterForm() {
+        return view( "user.UserSingup" );
+    }
+    public function userRegister( Request $request ) {
+        $user_id = $request->input( 'user_id' );
+        $name = $request->input( 'name' );
+        $channel_name = $request->input( 'channel_name' );
+        $phone = $request->input( 'phone' );
+        $email = $request->input( 'email' );
+        $password = $request->input( 'password' );
+        $resgister = Promot_users::where( 'user_id', $user_id )->update( [
+            'name'         => $name,
+            'email'        => $email,
+            'phone'        => $phone,
+            'password'     => $password,
+            'channel_name' => $channel_name,
+        ] );
+        if ( $resgister ) {
+            return back()->with( "success_msg", "Resgister Successfully" );
+        } else {
+            return back()->with( "faild_msg", "Resgister Faild" );
+        }
+    }
+    public function userLoginForm() {
+        return view( "user.userLogin" );
+    }
+    public function UserLogin( Request $request ) {
+        $user_id = $request->input( 'user_id' );
+        $password = $request->input( 'password' );
+        $userLogin = Promot_users::where( [
+            ['user_id', $user_id],
+            ['password', $password],
+        ] )->get()->count();
+
+        if ( $userLogin == 1 ) {
+            session( [
+                'user_id'  => $user_id,
+                'password' => $password,
+            ] );
+            return redirect( '/today_promote' );
+        } else {
+            return back()->with( "fail_msg", "User ID & Password Wrong" );
+        }
+    }
+    public function userLogout() {
+        session( [
+            'user_id'  => null,
+            'password' => null,
+        ] );
+        return redirect( '/' );
+    }
+
 }

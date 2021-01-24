@@ -5,17 +5,15 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-jet-application-mark class="block h-9 w-auto" />
-                    </a>
+                    <img src="{{asset('img/help.jpg')}}" width="100px" alt="">
                 </div>
-
-                <!-- Navigation Links -->
+                @if(!session()->has('password') && !session()->has('user_id'))
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
                 </div>
+                <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('create_u_id') }}" :active="request()->routeIs('create_u_id')">
                         {{ __('Create User ID') }}
@@ -29,11 +27,12 @@
 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('statistics') }}" :active="request()->routeIs('statistics')">
-                        {{ __('Statistics') }} &rrarr;
+                        {{ __('Statistics') }}
                     </x-jet-nav-link>
                 </div>
-
+                @endif
                 {{-- User  --}}
+                @if(session()->has('password') && session()->has('user_id'))
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('today_promote') }}" :active="request()->routeIs('today_promote')">
                         {{ __('Today Promot Details') }}
@@ -49,8 +48,14 @@
                         {{ __('Watch Promot Video') }}
                     </x-jet-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-jet-nav-link href="{{ route('user_logout') }}" :active="request()->routeIs('user_logout')">
+                        {{ __('Logout') }}
+                    </x-jet-nav-link>
+                </div>
+                @endif
             </div>
-
+            @if(!session()->has('password') && !session()->has('user_id'))
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
@@ -164,7 +169,7 @@
                     </x-jet-dropdown>
                 </div>
             </div>
-
+            @endif
             <!-- Hamburger -->
             <div class="-mr-2 flex items-center sm:hidden">
                 <button @click="open = ! open"
@@ -184,12 +189,42 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
+            @if(!session()->has('password') && !session()->has('user_id'))
             <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-jet-responsive-nav-link>
+            <x-jet-responsive-nav-link href="{{ route('create_u_id') }}" :active="request()->routeIs('create_u_id')">
+                {{ __('Create User ID') }}
+            </x-jet-responsive-nav-link>
+            <x-jet-responsive-nav-link href="{{ route('promot_id') }}" :active="request()->routeIs('promot_id')">
+                {{ __('Promot ID') }}
+            </x-jet-responsive-nav-link>
+            <x-jet-responsive-nav-link href="{{ route('statistics') }}" :active="request()->routeIs('statistics')">
+                {{ __('Statistics') }}
+            </x-jet-responsive-nav-link>
+            @endif
+            {{-- User  --}}
+            @if(session()->has('password') && session()->has('user_id'))
+            <x-jet-responsive-nav-link href="{{ route('today_promote') }}"
+                :active="request()->routeIs('today_promote')">
+                {{ __('Today Promot Details') }}
+            </x-jet-responsive-nav-link>
+            <x-jet-responsive-nav-link href="{{ route('user.index') }}" :active="request()->routeIs('user.index')">
+                {{ __('Promot My Video') }}
+            </x-jet-responsive-nav-link>
+            <x-jet-responsive-nav-link href="{{ route('watch_promote') }}"
+                :active="request()->routeIs('watch_promote')">
+                {{ __('Watch Promot Video') }}
+            </x-jet-responsive-nav-link>
+
+            <x-jet-responsive-nav-link href="{{ route('user_logout') }}" :active="request()->routeIs('user_logout')">
+                {{ __('Logout') }}
+            </x-jet-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
+        @if(!session()->has('password') && !session()->has('user_id'))
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="flex items-center px-4">
                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
@@ -263,5 +298,6 @@
                 @endif
             </div>
         </div>
+        @endif
     </div>
 </nav>
