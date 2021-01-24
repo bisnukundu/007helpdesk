@@ -63,6 +63,9 @@ class PromotMyVideo extends Controller {
         $data = Promot_users::where( 'permission', 1 )->get();
         return view( "user.TodayPromoteDetails", ['data'=>$data] );
     }
+    public function watch_promot(){
+        return view('user.WatchPromotVideo');
+    }
 
     /**
      * Show the form for editing the specified resource.
