@@ -1,3 +1,9 @@
+@if (session()->has( 'password' ) && session()->has( 'user_id' ) )
+<script>
+    window.location = "/today_promote";
+</script>
+@endif
+
 <x-guest-layout>
     <x-jet-authentication-card>
         <x-slot name="logo">

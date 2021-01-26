@@ -52,3 +52,5 @@ Route::post( 'user_register', [Create_u_id::class, "userRegister"] )->name( "use
 Route::get( 'user_login', [Create_u_id::class, "userLoginForm"] )->name( "user_login" );
 Route::get( 'userLogout', [Create_u_id::class, "userLogout"] )->name( "user_logout" );
 Route::post( 'user_login', [Create_u_id::class, "UserLogin"] )->name( "user_login" );
+// videos complate
+Route::post( 'complate', [PromotMyVideo::class, "complate"] )->name( "complate" );

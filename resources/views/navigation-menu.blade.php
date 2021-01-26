@@ -34,6 +34,7 @@
                 {{-- User  --}}
                 @if(session()->has('password') && session()->has('user_id'))
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    {{session("user_id")}}
                     <x-jet-nav-link href="{{ route('today_promote') }}" :active="request()->routeIs('today_promote')">
                         {{ __('Today Promot Details') }}
                     </x-jet-nav-link>

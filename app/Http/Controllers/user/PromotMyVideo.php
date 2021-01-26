@@ -4,8 +4,8 @@ namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
 use App\Models\Promot_users;
+use App\Models\VideoStatu;
 use Illuminate\Http\Request;
-use PromotUsers;
 
 class PromotMyVideo extends Controller {
     /**
@@ -61,12 +61,26 @@ class PromotMyVideo extends Controller {
     public function today_promot() {
         //Today Promote Video Details
         $data = Promot_users::where( 'permission', 1 )->get();
-        return view( "user.TodayPromoteDetails", ['data'=>$data] );
+        return view( "user.TodayPromoteDetails", ['data' => $data] );
     }
-    public function watch_promot(){
-        return view('user.WatchPromotVideo');
+    public function watch_promot() {
+        $arr = [];
+        $data = Promot_users::where( 'permission', 1 )->get()->toArray();
+        $complated_video = VideoStatu::all()->toArray();
+
+        return view( 'user.WatchPromotVideo', ['data' => $data, 'data2' => $complated_video] );
     }
 
+    public function complate( Request $request ) {
+        $video = $request->input( 'video' );
+        $id = $request->input( 'id' );
+        VideoStatu::insert( [
+            'isComplate' => 1,
+            'video_id'   => $video,
+            'user_id'    => $id,
+        ] );
+        return back()->with('msg',"Complate Successfully");
+    }
     /**
      * Show the form for editing the specified resource.
      *
