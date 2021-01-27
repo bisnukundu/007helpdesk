@@ -65,8 +65,9 @@ class PromotMyVideo extends Controller {
     }
     public function watch_promot() {
         $arr = [];
-        $data = Promot_users::where( 'permission', 1 )->get()->toArray();
-        $complated_video = VideoStatu::all()->toArray();
+        $data = Promot_users::where( 'permission', 1 )->get('video_id')->toArray();
+        $complated_video = VideoStatu::get(['user_id','video_id'])->toArray();
+        
 
         return view( 'user.WatchPromotVideo', ['data' => $data, 'data2' => $complated_video] );
     }
